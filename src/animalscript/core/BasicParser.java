@@ -247,8 +247,10 @@ public class BasicParser implements AnimalScriptInterface {
 	public static AnimalScriptInterface getHandlerForName(String handlerName) {
 		if (handlerName == null)
 			return null;
-		
+
 		Object o = currentHandlers.get(handlerName);
+		System.out.println("handlerName :"+ handlerName);
+		System.out.println("o: "+ o);
 		if (o != null && o instanceof AnimalScriptInterface)
 			return (AnimalScriptInterface) o;
 
@@ -281,6 +283,7 @@ public class BasicParser implements AnimalScriptInterface {
 
 	public AnimalScriptInterface getHandlerForCommand(String currentCommand) {
 		// AnimalScriptInterface handler = null;
+		System.out.println(currentCommand);
 		String handlerName = registeredKeywords.get(currentCommand);
 		return getHandlerForName(handlerName);
 	}
