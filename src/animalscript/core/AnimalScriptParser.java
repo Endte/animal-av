@@ -165,6 +165,7 @@ public class AnimalScriptParser extends BasicParser implements
 								+ ": '" + command + "' already assigned to "
 								+ registeredKeywords.get(command), MessageDisplay.RUN_ERROR);
 					else {
+						System.out.println("zu registeredkeywords added: "+ command);
 						registeredKeywords.put(command, handlerName);
 					}
 				}

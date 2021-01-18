@@ -29,7 +29,7 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
 
-
+import java.awt.image.BufferedImage;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -52,6 +52,14 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.metal.MetalSliderUI;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
 import animal.api.FileDrop;
 import animal.exchange.AnimationImporter;
@@ -153,6 +161,7 @@ public class AnimalToPDFWindowView extends AnimalFrame {
 		});
 	  }
 
+	private JButton testButton;
 	private JButton addButton;
 	private JButton addXButton;
 	private JTextField addXField;
@@ -176,6 +185,8 @@ public class AnimalToPDFWindowView extends AnimalFrame {
 	private JTextField removeToYField;
 	private JButton createButton;
 
+
+	private JPanel testPanel;
 	private JPanel addRemovePanel;
 	private JPanel addXPanel;
 	private JPanel removeXPanel;
@@ -282,6 +293,38 @@ public class AnimalToPDFWindowView extends AnimalFrame {
 		addRemovePanel.setMinimumSize(panelDim);
 		addRemovePanel.setMaximumSize(panelDim);
 
+		BufferedImage myPicture = null;
+		try {
+			myPicture = ImageIO.read(new File("test.jpg"));
+		} catch (IOException e) {
+		}
+		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+
+		main.add(picLabel);
+		/*testPanel = new JPanel();
+		testPanel.setLayout(new BorderLayout(0, 0));
+
+		testButton = new JButton("test test");
+		testButton.setToolTipText("test tooltip");
+		testButton.setMinimumSize(buttonSize);
+		testButton.setFocusPainted(false);
+		testButton.setFont(buttonFont);
+		testButton.setMaximumSize(buttonSize);
+		testButton.setPreferredSize(buttonSize);
+		testButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("testButton geklickt");
+
+			}
+		});
+		buttons.add(testButton);
+		testPanel.add(testButton);
+
+		main.add(testPanel);
+
+		 */
+
 		addButton = new JButton("add page");
 		addButton.setToolTipText("adds the current page to the list of pages");
 		addButton.setFocusPainted(false);
@@ -342,11 +385,6 @@ public class AnimalToPDFWindowView extends AnimalFrame {
 		removeXPanel.setMaximumSize(panelDim);
 
 		main.add(addXPanel);
-
-
-
-
-
 
 		removeButton = new JButton("remove page");
 		removeButton.setToolTipText("removes the last page of the list of pages");
