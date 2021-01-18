@@ -18,7 +18,6 @@ export.animation/animal-zip=animal.exchange.AnimalZipExporter
 animalscript.admin=animalscript.core.BaseAdminParser
 animalscript.animators=animalscript.core.BaseAnimatorParser
 animalscript.objects=animalscript.core.BaseObjectParser
-animalscript.image=animalscript.extensions.ImageSupport
 # the following line can be critical...
 animalscript.array=animalscript.extensions.ArraySupportBuiltIn
 animalscript.code=animalscript.extensions.CodeSupport
