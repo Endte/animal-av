@@ -1,29 +1,15 @@
 package animalscript.extensions;
 
-import algoanim.primitives.generators.VariablesGenerator;
-import animal.animator.VariableDeclaration;
-import animal.animator.VariableDiscard;
-import animal.animator.VariableUpdate;
+import animal.graphics.*;
+import animal.graphics.meta.PolygonalShape;
 import animal.main.Animal;
 import animal.misc.ParseSupport;
-import animal.misc.XProperties;
-import animal.variables.Variable;
-import animalscript.core.AnimalParseSupport;
-import animalscript.core.AnimalScriptInterface;
-import animalscript.core.BasicParser;
-import java.io.IOException;
-import java.util.Hashtable;
-
-import algoanim.primitives.generators.VariablesGenerator;
-import animal.animator.VariableDeclaration;
-import animal.animator.VariableDiscard;
-import animal.animator.VariableUpdate;
-import animal.misc.ParseSupport;
-import animal.variables.Variable;
+import animal.vhdl.graphics.PTT;
 import animalscript.core.AnimalParseSupport;
 import animalscript.core.AnimalScriptInterface;
 import animalscript.core.BasicParser;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Hashtable;
 
@@ -31,6 +17,7 @@ public class ImageSupport extends BasicParser implements AnimalScriptInterface {
     public ImageSupport() {
         handledKeywords = new Hashtable<String, Object>();
         handledKeywords.put("image", "parseImageInput");
+        System.out.println("in ImageSupport Class");
     }
 
     public boolean generateNewStep(String currentCommand) {
@@ -38,16 +25,61 @@ public class ImageSupport extends BasicParser implements AnimalScriptInterface {
     }
 
     public void parseImageInput() throws IOException {
-        String name;
-        String path;
-
         int initStep = AnimalParseSupport.getCurrentStep();
         String value = "", role = null;
-        name = AnimalParseSupport.parseText(stok, "image key");
-        path = AnimalParseSupport.parseText(stok, "image path");
 
-System.out.println("Ende");
-       // BasicParser.addAnimatorToAnimation(varDec, anim);
+        String localType = ParseSupport.parseWord(stok, "image type").toLowerCase();
+        String ObjName = AnimalParseSupport.parseText(stok, "Image Obj name");
+
+        PTImage square = new PTImage("test text", new Point(600,600));
+       // PTSquare square = new PTSquare(600,600, 50);
+        square.setObjectName(ObjName);
+
+        BasicParser.addGraphicObject(square, anim);
+
+        StringBuilder oids = new StringBuilder();
+        oids.append(square.getNum(false));
+
+        // insert into object list -- necessary for lookups later on!
+        getObjectIDs().put(square.getObjectName(), square.getNum(false));
+        getObjectTypes().put(square.getObjectName(), getTypeIdentifier("triangle"));
+        // display the component, unless marked as 'hidden'
+        AnimalParseSupport.showComponents(stok, "" + oids.toString(), localType,
+                true);
+
+
+
+    }
+
+    private void finishImageParsing(PolygonalShape shape, String localType)
+            throws IOException {
+        // parse and set the color
+        shape.setColor(
+                AnimalParseSupport.parseAndSetColor(stok, localType, "color"));
+
+        // check for depth information and set it, if available
+        AnimalParseSupport.parseAndSetDepth(stok, shape, localType);
+
+        shape.setFilled(
+                ParseSupport.parseOptionalWord(stok, localType + " filled", "filled"));
+
+        if (shape.isFilled())
+            shape.setFillColor(
+                    AnimalParseSupport.parseAndSetColor(stok, localType, "fillColor"));
+
+        // add the object to the list of graphic objects
+        BasicParser.addGraphicObject(shape, anim);
+
+        // append the object id to the list
+        StringBuilder oids = new StringBuilder();
+        oids.append(shape.getNum(false));
+
+        // insert into object list -- necessary for lookups later on!
+        getObjectIDs().put(shape.getObjectName(), shape.getNum(false));
+        getObjectTypes().put(shape.getObjectName(), getTypeIdentifier("triangle"));
+        // display the component, unless marked as 'hidden'
+        AnimalParseSupport.showComponents(stok, "" + oids.toString(), localType,
+                true);
     }
 
 }
