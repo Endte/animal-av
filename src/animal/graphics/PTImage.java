@@ -45,6 +45,8 @@ public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
      * baseline. Most of the text will be above the y value of this coordinate.
      */
     protected Point position = new Point(0, 0);
+    protected int width = 0;
+    protected int height = 0;
 
     /**
      * The current rotation angle (default is 0 degrees)
@@ -88,36 +90,12 @@ public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
      * the start position of the text's baseline, e.g. most of the text will
      * be "above" this position.
      */
-    public PTImage(String textValue, Point targetPosition) {
-        this(textValue, targetPosition, getDefaultFont());
-    }
-
-    /**
-     * Create a new PTImage instance with a given text and font,
-     * placed at position (50, 50);
-     *
-     * @param textValue the text to use
-     * @param targetFont the font to use
-     */
-    public PTImage(String textValue, Font targetFont) {
-        this(textValue, new Point(50, 50), targetFont);
-    }
-
-    /**
-     * Create a new PTImage instance with a given text and font at a
-     * given position
-     *
-     * @param textValue the text to use
-     * @param targetPosition the position at which the text is placed. This is
-     * the start position of the text's baseline, e.g. most of the text will
-     * be "above" this position.
-     * @param targetFont the font to use
-     */
-    public PTImage(String textValue, Point targetPosition, Font targetFont) {
-        this();
+    public PTImage(String textValue, Point targetPosition, int width, int height) {
         setText(textValue);
         setPosition(targetPosition);
-        setFont(targetFont);
+        setFont( getDefaultFont());
+        setWidth(width);
+        setHeight(height);
     }
 
     // =================================================================
@@ -216,6 +194,14 @@ public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
         return text;
     }
 
+    public int getWidth(){
+        return width;
+    }
+
+    public int getHeight(){
+        return height;
+    }
+
     /**
      * returns the type of this object as a String
      *
@@ -266,6 +252,14 @@ public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
             position.setLocation(x, y);
         else
             position = new Point(x, y);
+    }
+
+    public void setWidth(int w){
+        this.width = w;
+    }
+
+    public void setHeight(int h){
+        this.height = h;
     }
 
     /**
@@ -332,7 +326,7 @@ public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
                     RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             // to get the former version change g2 into g and remove the code above
             // under the line
-        g2.drawImage(img, 0,0,null);
+        g2.drawImage(img, getPosition().x,getPosition().y, getWidth(), getHeight(),null);
            // g2.drawString(getText(), position.x, position.y);
 
     }
@@ -413,6 +407,8 @@ public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
         targetShape.setScalingFactorX(scalingFactorX);
         targetShape.setScalingFactorY(scalingFactorY);
         targetShape.setText(new String(text));
+        targetShape.setHeight((getHeight()));
+        targetShape.setWidth(getWidth());
     }
 
     /**

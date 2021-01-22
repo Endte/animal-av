@@ -17,7 +17,6 @@ public class ImageSupport extends BasicParser implements AnimalScriptInterface {
     public ImageSupport() {
         handledKeywords = new Hashtable<String, Object>();
         handledKeywords.put("image", "parseImageInput");
-        System.out.println("in ImageSupport Class");
     }
 
     public boolean generateNewStep(String currentCommand) {
@@ -29,10 +28,12 @@ public class ImageSupport extends BasicParser implements AnimalScriptInterface {
         String value = "", role = null;
 
         String localType = ParseSupport.parseWord(stok, "image type").toLowerCase();
-        String ObjName = AnimalParseSupport.parseText(stok, "Image Obj name");
+        String ObjName = ParseSupport.parseText(stok, "Image Obj name");
+        String ImagePath = ParseSupport.parseText(stok, "Image pathName");
+        Point position = ParseSupport.parseNode(stok, "Image Position");
+        Point size = ParseSupport.parseNode(stok, "Image (Width,Height)");
 
-        PTImage square = new PTImage("test text", new Point(600,600));
-       // PTSquare square = new PTSquare(600,600, 50);
+        PTImage square = new PTImage("test text", position, size.x, size.y);
         square.setObjectName(ObjName);
 
         BasicParser.addGraphicObject(square, anim);
