@@ -16,41 +16,16 @@ import javax.swing.*;
  *         R&ouml;&szlig;ling</a>
  * @version 1.0 24.08.1998
  */
-public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
+public class PTImage extends PTGraphicObject{
     // =====================================================================
     // Public Constants
     // =====================================================================
 
-    /**
-     * the type label for this object, used e.g. for access properties
-     */
     public static final String TEXT_TYPE = "Text";
-
-    /**
-     * the serialization UID for this object
-     */
-//  private static final long serialVersionUID = 5149137629030065454L;
-
-    // =====================================================================
-    // Fields
-    // =====================================================================
-
-    /**
-     * The Font used for this element.
-     */
-    protected Font font = null;
-
-    /**
-     * The position of this text, representing the starting point of the text's
-     * baseline. Most of the text will be above the y value of this coordinate.
-     */
     protected Point position = new Point(0, 0);
     protected int width = 0;
     protected int height = 0;
-
-    /**
-     * The current rotation angle (default is 0 degrees)
-     */
+    
     protected double rotationAngle = 0.0;
 
     /**
@@ -80,37 +55,12 @@ public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
         initializeWithDefaults(getType());
     }
 
-    /**
-     * Create a new PTImage instance with a given text and position.
-     * This will assign the default font - whatever it is - to the
-     * text.
-     *
-     * @param textValue the text to use
-     * @param targetPosition the position at which the text is placed. This is
-     * the start position of the text's baseline, e.g. most of the text will
-     * be "above" this position.
-     */
+
     public PTImage(String textValue, Point targetPosition, int width, int height) {
         setText(textValue);
         setPosition(targetPosition);
-        setFont( getDefaultFont());
         setWidth(width);
         setHeight(height);
-    }
-
-    // =================================================================
-    // STATIC ATTRIBUTES
-    // =================================================================
-
-    /**
-     * returns the default font for Text elements
-     *
-     * @return the default font for text elements
-     */
-    public static Font getDefaultFont() {
-        AnimalConfiguration config =
-                AnimalConfiguration.getDefaultConfiguration();
-        return config.getDefaultFontValue(PTImage.TEXT_TYPE, "font");
     }
 
     // ======================================================================
@@ -128,7 +78,6 @@ public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
         super.initializeWithDefaults(primitiveName);
         AnimalConfiguration config =
                 AnimalConfiguration.getDefaultConfiguration();
-        font = config.getDefaultFontValue(primitiveName, "font");
     }
 
     /**
@@ -144,13 +93,6 @@ public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
         return 2;
     }
 
-    /**
-     * returns this text's font
-     * @return the font used for this text
-     */
-    public Font getFont() {
-        return font;
-    }
 
     /**
      * returns this text's position as a Point
@@ -218,17 +160,6 @@ public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
      */
     public String[] handledKeywords() {
         return new String[] { "Text" };
-    }
-
-
-    /**
-     * sets the text object's font to f, if f is not null
-     * @param f the target font; if null, this operation is ignored to
-     * ensure consistency and defined values
-     */
-    public void setFont(Font f) {
-        if (f != null)
-            font = f;
     }
 
     /**
@@ -353,10 +284,6 @@ public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
     public void scale(double scaleX, double scaleY) {
         setScalingFactorX(scaleX);
         setScalingFactorY(scaleY);
-        // also scale the font!
-        //  Font currentFont = getFont();
-        //  setFont(new Font(currentFont.getName(), currentFont.getStyle(), (int) Math
-        //  .round(currentFont.getSize() * ((scaleX + scaleY) / 2))));
     }
 
     public void translate(int x, int y) {
@@ -400,8 +327,6 @@ public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
 
         // clone anything else that is specific to this type
         // and its potential subtypes
-        targetShape.setFont(new Font(getFont().getFamily(),
-                getFont().getStyle(), getFont().getSize()));
         targetShape.setPosition(getPosition().x, getPosition().y);
         targetShape.setRotationAngle(rotationAngle);
         targetShape.setScalingFactorX(scalingFactorX);
@@ -416,10 +341,8 @@ public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
      * the box and the pointer.
      */
     public Rectangle getBoundingBox() {
-        int width = Animal.getStringWidth(getText(), getFont());
-        FontMetrics fm = Animal.getConcreteFontMetrics(getFont());
-        return new Rectangle(position.x, position.y - fm.getAscent(),
-                width, fm.getAscent() + fm.getDescent());
+        return new Rectangle(position.x, position.y,
+                width, height);
     }
 
     /**
@@ -463,19 +386,12 @@ public class PTImage extends PTGraphicObject implements ImmediateTextContainer {
      */
     public void updateDefaults(XProperties defaultProperties) {
         super.updateDefaults(defaultProperties);
-        Font f = getFont();
-        defaultProperties.put(getType() +".bold", f.isBold());
-        defaultProperties.put(getType() +".font", f);
-        defaultProperties.put(getType() +".fontName", f.getFamily());
-        defaultProperties.put(getType() +".fontSize", f.getSize());
-        defaultProperties.put(getType() +".italic", f.isItalic());
         defaultProperties.put(getType() +".text", getText());
     }
 
     public void discard() {
         super.discard();
         position = null;
-        font = null;
         text = null;
     }
 } // PTImage
