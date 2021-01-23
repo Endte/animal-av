@@ -22,26 +22,11 @@ public class PTImage extends PTGraphicObject{
     // =====================================================================
 
     public static final String TEXT_TYPE = "Text";
+    protected String pathName = "";
     protected Point position = new Point(0, 0);
     protected int width = 0;
     protected int height = 0;
     
-    protected double rotationAngle = 0.0;
-
-    /**
-     * The current x-scaling factor (default is 1.0)
-     */
-    protected double scalingFactorX = 1.0;
-
-    /**
-     * The current y-scaling factor (default is 1.0)
-     */
-    protected double scalingFactorY = 1.0;
-
-    /**
-     * The actual text used by this component, represented by a String object
-     */
-    protected String text = "";
 
     // ======================================================================
     // Constructors
@@ -56,8 +41,8 @@ public class PTImage extends PTGraphicObject{
     }
 
 
-    public PTImage(String textValue, Point targetPosition, int width, int height) {
-        setText(textValue);
+    public PTImage(String pathName,  Point targetPosition, int width, int height) {
+        setPathName(pathName);
         setPosition(targetPosition);
         setWidth(width);
         setHeight(height);
@@ -102,47 +87,13 @@ public class PTImage extends PTGraphicObject{
         return position;
     }
 
-    /**
-     * returns the current rotation angle (if any). Defaults to 0.0
-     * @return the current rotation angle
-     */
-    public double getRotationAngle() {
-        return rotationAngle;
-    }
-
-    /**
-     * returns the current scaling factor for the text in x direction.
-     * Defaults to 1.0
-     * @return the current scaling factor in x direction
-     */
-    public double getScalingFactorX() {
-        return scalingFactorX;
-    }
-
-    /**
-     * returns the current scaling factor for the text in y direction.
-     * Defaults to 1.0
-     * @return the current scaling factor in y direction
-     */
-    public double getScalingFactorY() {
-        return scalingFactorX;
-    }
-
-    /**
-     * returns this text's text value
-     * @return the text value used for this text
-     */
-    public String getText() {
-        return text;
-    }
-
     public int getWidth(){
         return width;
     }
-
     public int getHeight(){
         return height;
     }
+    public String getPathName() { return pathName; }
 
     /**
      * returns the type of this object as a String
@@ -193,44 +144,8 @@ public class PTImage extends PTGraphicObject{
         this.height = h;
     }
 
-    /**
-     * sets the new rotation angle (if any). Defaults to 0.0
-     *
-     * @param newAngle the new rotation angle
-     */
-    public void setRotationAngle(double newAngle) {
-        rotationAngle = newAngle;
-    }
-
-    /**
-     * sets the current scaling factor for the text in x direction.
-     *
-     * @param scaleX the new scaling factor in x direction
-     */
-    public void setScalingFactorX(double scaleX) {
-        scalingFactorX = scaleX;
-    }
-
-    /**
-     * returns the current scaling factor for the text in y direction.
-     *
-     * @param scaleY the new scaling factor in y direction
-     */
-    public void setScalingFactorY(double scaleY) {
-        scalingFactorY = scaleY;
-    }
-
-    /**
-     * assigns a new text for this object
-     *
-     * @param newText the new text to be stored. If null, an empty String
-     * ("") will be assigned instead to ensure well-defined attributes.
-     */
-    public void setText(String newText) {
-        if (newText == null)
-            text = "";
-        else
-            text = newText;
+    public void setPathName(String path){
+        pathName = path;
     }
 
     /*****************************************************************************
@@ -246,7 +161,7 @@ public class PTImage extends PTGraphicObject{
      * all graphic operations.
      */
     public void paint(Graphics g) {
-            Image img = new ImageIcon("test.jpg").getImage();
+            Image img = new ImageIcon(getPathName()).getImage();
 
             // ---------------------------------------------------------
             Graphics2D g2 = (Graphics2D) g;
@@ -262,29 +177,6 @@ public class PTImage extends PTGraphicObject{
 
     }
 
-    /*****************************************************************************
-     * standard graphics routines
-     ****************************************************************************/
-
-    public void rotate(double angle) {
-        setRotationAngle(angle);
-    }
-
-    public void rotate(double angle, PTPoint center) {
-        // Translate center of rotation to origin
-        translate(-center.getX(), -center.getY());
-
-        // Rotate(around point of origin)
-        rotate(angle);
-
-        // Translate back
-        translate(center.getX(), center.getY());
-    }
-
-    public void scale(double scaleX, double scaleY) {
-        setScalingFactorX(scaleX);
-        setScalingFactorY(scaleY);
-    }
 
     public void translate(int x, int y) {
         position.translate(x, y);
@@ -328,12 +220,9 @@ public class PTImage extends PTGraphicObject{
         // clone anything else that is specific to this type
         // and its potential subtypes
         targetShape.setPosition(getPosition().x, getPosition().y);
-        targetShape.setRotationAngle(rotationAngle);
-        targetShape.setScalingFactorX(scalingFactorX);
-        targetShape.setScalingFactorY(scalingFactorY);
-        targetShape.setText(new String(text));
         targetShape.setHeight((getHeight()));
         targetShape.setWidth(getWidth());
+        targetShape.setPathName(getPathName());
     }
 
     /**
@@ -346,52 +235,15 @@ public class PTImage extends PTGraphicObject{
     }
 
     /**
-     * Converts the Text to a string representation.
-     */
-    public String toString() {
-        StringBuilder sb = new StringBuilder(30 + getText().length());
-        sb.append("Text ");
-        if (getObjectName() != null)
-            sb.append("\"").append(getObjectName()).append("\" ");
-        sb.append("{ '").append(text).append("' at (").append(position.x);
-        sb.append(", ").append(position.y).append(") }");
-        return sb.toString();
-    }
-
-    /*****************************************************************************
-     * File I/O
-     ****************************************************************************/
-
-    public static String escapeText(String input) {
-        if (input.indexOf("\"") == -1)
-            return new String(input);
-
-        StringBuilder sb = new StringBuilder(input.length() + 30);
-        int start = 0;
-        int end = input.indexOf("\"", start);
-        while (end >= 0) {
-            sb.append(input.substring(start, end));
-            sb.append("\\\"");
-            start = end + 1;
-            end = input.indexOf("\"", start);
-        }
-        if (start < input.length())
-            sb.append(input.substring(start));
-        return sb.toString();
-    }
-
-    /**
      * Update the default properties for this object
      * @param defaultProperties the properties to be updated
      */
     public void updateDefaults(XProperties defaultProperties) {
         super.updateDefaults(defaultProperties);
-        defaultProperties.put(getType() +".text", getText());
     }
 
     public void discard() {
         super.discard();
         position = null;
-        text = null;
     }
-} // PTImage
+} 

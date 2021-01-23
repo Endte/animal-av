@@ -33,7 +33,7 @@ public class ImageSupport extends BasicParser implements AnimalScriptInterface {
         Point position = ParseSupport.parseNode(stok, "Image Position");
         Point size = ParseSupport.parseNode(stok, "Image (Width,Height)");
 
-        PTImage square = new PTImage("test text", position, size.x, size.y);
+        PTImage square = new PTImage(ImagePath, position, size.x, size.y);
         square.setObjectName(ObjName);
 
         BasicParser.addGraphicObject(square, anim);
