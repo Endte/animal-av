@@ -162,21 +162,15 @@ public class PTImage extends PTGraphicObject{
      */
     public void paint(Graphics g) {
             Image img = new ImageIcon(getPathName()).getImage();
-
-            // ---------------------------------------------------------
             Graphics2D g2 = (Graphics2D) g;
 
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                     RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            // to get the former version change g2 into g and remove the code above
-            // under the line
         g2.drawImage(img, getPosition().x,getPosition().y, getWidth(), getHeight(),null);
-           // g2.drawString(getText(), position.x, position.y);
 
     }
-
 
     public void translate(int x, int y) {
         position.translate(x, y);
@@ -195,34 +189,34 @@ public class PTImage extends PTGraphicObject{
      */
     public Object clone() {
         // create new object
-        PTImage targetShape = new PTImage();
+        PTImage targetImage = new PTImage();
 
         // clone shared attributes
         // from PTGO: color, depth, num, objectName
-        cloneCommonFeaturesInto(targetShape);
+        cloneCommonFeaturesInto(targetImage);
 
         // clone anything else that is specific to this type
         // and its potential subtypes
-        return targetShape;
+        return targetImage;
     }
 
     /**
      * Offers cloning support by cloning or duplicating the shared attributes
      *
-     * @param targetShape the shape into which the values are to be copied. Note
+     * @param targetImage the image into which the values are to be copied. Note
      * the direction -- it is "currentObject.cloneCommonFeaturesInto(newObject)",
      * not vice versa!
      */
-    protected void cloneCommonFeaturesInto(PTImage targetShape) {
+    protected void cloneCommonFeaturesInto(PTImage targetImage) {
         // clone features from PTGraphicsObject: color, depth, num, objectName
-        super.cloneCommonFeaturesInto(targetShape);
+        super.cloneCommonFeaturesInto(targetImage);
 
         // clone anything else that is specific to this type
         // and its potential subtypes
-        targetShape.setPosition(getPosition().x, getPosition().y);
-        targetShape.setHeight((getHeight()));
-        targetShape.setWidth(getWidth());
-        targetShape.setPathName(getPathName());
+        targetImage.setPosition(getPosition().x, getPosition().y);
+        targetImage.setHeight((getHeight()));
+        targetImage.setWidth(getWidth());
+        targetImage.setPathName(getPathName());
     }
 
     /**
@@ -246,4 +240,4 @@ public class PTImage extends PTGraphicObject{
         super.discard();
         position = null;
     }
-} 
+}
