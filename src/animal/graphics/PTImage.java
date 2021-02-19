@@ -2,15 +2,13 @@ package animal.graphics;
 
 import java.awt.*;
 
-import animal.graphics.meta.ImmediateTextContainer;
-import animal.main.Animal;
 import animal.main.AnimalConfiguration;
 import animal.misc.XProperties;
 
 import javax.swing.*;
 
 /**
- * Text-Object for Animal.
+ * Image-Object for Animal.
  *
  * @author <a href="http://www.ahrgr.de/guido/">Guido
  *         R&ouml;&szlig;ling</a>
@@ -21,7 +19,7 @@ public class PTImage extends PTGraphicObject{
     // Public Constants
     // =====================================================================
 
-    public static final String TEXT_TYPE = "Text";
+    public static final String IMAGE_TYPE = "Image";
     protected String pathName = "";
     protected Point position = new Point(0, 0);
     protected int width = 0;
@@ -61,8 +59,7 @@ public class PTImage extends PTGraphicObject{
      */
     public void initializeWithDefaults(String primitiveName) {
         super.initializeWithDefaults(primitiveName);
-        AnimalConfiguration config =
-                AnimalConfiguration.getDefaultConfiguration();
+        AnimalConfiguration config = AnimalConfiguration.getDefaultConfiguration();
     }
 
     /**
@@ -101,7 +98,7 @@ public class PTImage extends PTGraphicObject{
      * @return this object's type as a String (i.e., "Text")
      */
     public String getType() {
-        return PTImage.TEXT_TYPE;
+        return PTImage.IMAGE_TYPE;
     }
 
     /**
@@ -144,6 +141,22 @@ public class PTImage extends PTGraphicObject{
         this.height = h;
     }
 
+    public void setSize(int w, int h) {
+        this.width = w;
+        this.height = h;
+    }
+
+    public void scaleFromNewPoint(Point p) {
+        int originalX = this.position.x;
+        int originalY = this.position.y;
+        if(originalX <= p.x) {
+            this.setWidth(originalX + p.x);
+        }
+        if(originalY <= p.y) {
+            this.setHeight(originalY + p.y);
+        }
+    }
+
     public void setPathName(String path){
         pathName = path;
     }
@@ -161,7 +174,7 @@ public class PTImage extends PTGraphicObject{
      * all graphic operations.
      */
     public void paint(Graphics g) {
-            Image img = new ImageIcon(getPathName()).getImage();
+            Image img = new ImageIcon(getPathName() + ".jpg").getImage();
             Graphics2D g2 = (Graphics2D) g;
 
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -169,12 +182,12 @@ public class PTImage extends PTGraphicObject{
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                     RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2.drawImage(img, getPosition().x,getPosition().y, getWidth(), getHeight(),null);
-
     }
 
     public void translate(int x, int y) {
         position.translate(x, y);
     }
+
 
     /*****************************************************************************
      * other GraphicObject's methods that have to be implemented
@@ -224,8 +237,7 @@ public class PTImage extends PTGraphicObject{
      * the box and the pointer.
      */
     public Rectangle getBoundingBox() {
-        return new Rectangle(position.x, position.y,
-                width, height);
+        return new Rectangle(position.x, position.y, width, height);
     }
 
     /**
