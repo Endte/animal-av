@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="javax.xml.bind:jaxb-api-osgi:2.2-promoted-b14" type="repository">
+    <properties maven-id="javax.xml.bind:jaxb-api-osgi:LATEST" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/javax/xml/bind/jaxb-api-osgi/2.2.7/jaxb-api-osgi-2.2.7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/javax/xml/bind/jaxb-api-osgi/2.2.7/jaxb-api-osgi-2.2.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
