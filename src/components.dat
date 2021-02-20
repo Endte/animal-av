@@ -18,6 +18,7 @@ export.animation/animal-zip=animal.exchange.AnimalZipExporter
 animalscript.admin=animalscript.core.BaseAdminParser
 animalscript.animators=animalscript.core.BaseAnimatorParser
 animalscript.objects=animalscript.core.BaseObjectParser
+animalscript.image=animalscript.extensions.ImageSupport
 # the following line can be critical...
 animalscript.array=animalscript.extensions.ArraySupportBuiltIn
 animalscript.code=animalscript.extensions.CodeSupport
@@ -55,6 +56,7 @@ primitive.Polygon=animal.graphics.PTPolygon
 primitive.IntMatrix=animal.graphics.PTIntMatrix
 primitive.StringMatrix=animal.graphics.PTStringMatrix
 primitive.DoubleMatrix=animal.graphics.PTDoubleMatrix
+primitive.Image=animal.graphics.PTImage
 #primitive.And=animal.vhdl.graphics.PTAnd
 #primitive.D=animal.vhdl.graphics.PTD
 #primitive.Demux=animal.vhdl.graphics.PTDemux

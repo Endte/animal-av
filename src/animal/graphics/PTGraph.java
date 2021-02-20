@@ -299,7 +299,7 @@ public class PTGraph extends PTGraphicObject implements TextContainer {
         Color.BLACK);
     elemHighlightColor = config.getDefaultColor(primitiveName,
         "elemHighlightColor", Color.RED);
-    highlightColor = config.getDefaultColor(primitiveName, "highkightColor",
+    highlightColor = config.getDefaultColor(primitiveName, "highlightColor",
         Color.BLUE);
     outlineColor = config.getDefaultColor(primitiveName, "outlineColor",
         Color.BLACK);

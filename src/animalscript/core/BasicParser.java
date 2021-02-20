@@ -247,7 +247,7 @@ public class BasicParser implements AnimalScriptInterface {
 	public static AnimalScriptInterface getHandlerForName(String handlerName) {
 		if (handlerName == null)
 			return null;
-		
+
 		Object o = currentHandlers.get(handlerName);
 		if (o != null && o instanceof AnimalScriptInterface)
 			return (AnimalScriptInterface) o;
