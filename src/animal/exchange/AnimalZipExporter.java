@@ -6,9 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.HashSet;
+import java.util.StringTokenizer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import animal.graphics.PTGraphicObject;
 import translator.AnimalTranslator;
 import animal.animator.InteractionElement;
 import animal.main.Animal;
@@ -63,6 +66,8 @@ public class AnimalZipExporter extends AnimationExporter {
 
     // add the interaction definition file
     boolean interactionSuccess = addInteractionDefinition(out);
+
+    boolean imageSuccess = addImageFiles(out);
     // add the manifest file
     boolean manifestSuccess = addManifestFile(out,
         AnimalZipFormat.ANIMATION_FILENAME);
@@ -70,7 +75,7 @@ public class AnimalZipExporter extends AnimationExporter {
     boolean animationSuccess = addAnimationDefinition(out);
 
     // has every file been written successfully?
-    return manifestSuccess && animationSuccess && interactionSuccess;
+    return manifestSuccess && animationSuccess && interactionSuccess && imageSuccess;
   }
 
   /**
@@ -100,19 +105,21 @@ public class AnimalZipExporter extends AnimationExporter {
     }
 
     // copy the interaction definition file to the zip file
-    try {
-      InputStream in = new FileInputStream(interactionDefinitionFilename);
-      out.putNextEntry(new ZipEntry(interactionDefinitionFilename));
-      byte[] buf = new byte[2048];
-      int len;
-      while ((len = in.read(buf)) > 0) {
-        out.write(buf, 0, len);
+    if(interactionDefinitionFilename!="") {
+      try {
+        InputStream in = new FileInputStream(interactionDefinitionFilename);
+        out.putNextEntry(new ZipEntry(interactionDefinitionFilename));
+        byte[] buf = new byte[2048];
+        int len;
+        while ((len = in.read(buf)) > 0) {
+          out.write(buf, 0, len);
+        }
+        out.closeEntry();
+        in.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+        return false;
       }
-      out.closeEntry();
-      in.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-      return false;
     }
 
     // if there has not been any error until here, the process was successful
@@ -146,6 +153,49 @@ public class AnimalZipExporter extends AnimationExporter {
     } catch (IOException e) {
       e.printStackTrace();
       return false;
+    }
+    return true;
+  }
+
+  /**
+   * Adds the Image Files to the given zip output stream.
+   *
+   * @param out
+   *          the zip file output stream the manifest file should be written to
+   *
+   * @return whether the manifest file has been added successfully
+   */
+
+  private boolean addImageFiles(ZipOutputStream out) {
+    HashSet<String> imageFilePath = new HashSet<String>();
+
+    for(PTGraphicObject g : animationToExport.getGraphicObjects()){
+      if(g.getType()=="Image"){
+        StringTokenizer stok = new StringTokenizer(g.toString());
+        String localType = stok.nextToken();
+        String ObjName = stok.nextToken();
+        String ImagePath = stok.nextToken().replaceAll("\"","");
+        imageFilePath.add(ImagePath);
+      }
+    }
+    for(String imageName : imageFilePath) {
+      // check parameter
+      if (out == null || imageName == null)
+        return false;
+      try {
+        InputStream in = new FileInputStream(imageName);
+        out.putNextEntry(new ZipEntry(imageName));
+        byte[] buf = new byte[2048];
+        int len;
+        while ((len = in.read(buf)) > 0) {
+          out.write(buf, 0, len);
+        }
+        out.closeEntry();
+        in.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+        return false;
+      }
     }
     return true;
   }

@@ -252,4 +252,15 @@ public class PTImage extends PTGraphicObject{
         super.discard();
         position = null;
     }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder("image");
+        sb.append(" ");
+        if (getObjectName() != null)
+            sb.append("\"").append(getObjectName()).append("\" ");
+        sb.append("\"").append(getPathName()).append("\" ");
+        sb.append("(").append(getPosition().x).append(",").append(getPosition().y).append(")").append(" ");
+        sb.append("(").append(getWidth()).append(",").append(getHeight()).append(")").append("\"");
+        return sb.toString();
+    }
 }
