@@ -108,19 +108,22 @@ public class AnimalZipImporter extends AnimationImporter {
         interactionDefinition = line.substring(beginIndex + 1, endIndex);
       }
     }
-
-    // write the interaction definition file
-    zipEntry = zipFile.getEntry(interactionDefinition);
-    bis = new BufferedInputStream(zipFile.getInputStream(zipEntry));
-    bos = new BufferedOutputStream(new FileOutputStream(interactionDefinition),
-        buffer.length);
-    while ((size = bis.read(buffer, 0, buffer.length)) != -1) {
-      bos.write(buffer, 0, size);
-    }
-    bos.flush();
-    bos.close();
-    bis.close();
     scanner.close();
+    if (!interactionDefinition.equals("")) {
+      // write the interaction definition file
+      System.out.println("interactionDefinitio: " + interactionDefinition);
+      zipEntry = zipFile.getEntry(interactionDefinition);
+      System.out.println("zipEntry: " + zipEntry);
+      bis = new BufferedInputStream(zipFile.getInputStream(zipEntry));
+      bos = new BufferedOutputStream(new FileOutputStream(interactionDefinition),
+              buffer.length);
+      while ((size = bis.read(buffer, 0, buffer.length)) != -1) {
+        bos.write(buffer, 0, size);
+      }
+      bos.flush();
+      bos.close();
+      bis.close();
+    }
   }
   
   public AnimalZipImporter() {
