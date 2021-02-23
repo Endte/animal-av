@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -14,6 +15,8 @@ import translator.AnimalTranslator;
 import animal.main.Animal;
 import animal.main.Animation;
 import animalscript.core.AnimalScriptParser;
+
+import javax.sound.midi.SysexMessage;
 
 /**
  * Imports an animation from a ZIP file as specified in {@link AnimalZipFormat}.
@@ -124,6 +127,26 @@ public class AnimalZipImporter extends AnimationImporter {
       bos.close();
       bis.close();
     }
+
+    // unzip image files
+    Enumeration zipEntries = zipFile.entries();
+    while (zipEntries.hasMoreElements()) {
+      ZipEntry z = (ZipEntry) zipEntries.nextElement();
+      String fileName = z.getName();
+      if(fileName.endsWith(".jpg")|| fileName.endsWith(".jpeg")){
+        bis = new BufferedInputStream(zipFile.getInputStream(z));
+        bos = new BufferedOutputStream(new FileOutputStream(fileName),
+                buffer.length);
+        while ((size = bis.read(buffer, 0, buffer.length)) != -1) {
+          bos.write(buffer, 0, size);
+        }
+        bos.flush();
+        bos.close();
+        bis.close();
+      }
+    }
+
+
   }
   
   public AnimalZipImporter() {

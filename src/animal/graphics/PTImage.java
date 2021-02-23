@@ -174,7 +174,7 @@ public class PTImage extends PTGraphicObject{
      * all graphic operations.
      */
     public void paint(Graphics g) {
-            Image img = new ImageIcon(getPathName() + ".jpg").getImage();
+            Image img = new ImageIcon(getPathName()).getImage();
             Graphics2D g2 = (Graphics2D) g;
 
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
