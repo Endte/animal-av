@@ -532,13 +532,11 @@ appendStep=Append Step
 refresh=Refresh
 editAnimator=Edit Animator
 deleteAnimator=Delete Animator
-
 HDLEditor.inout=Input/Output Settings
 HDLEditor.logicGateInput=\#input (2-10):
 HDLEditor.outputname=Output name:
 HDLEditor.syncControl=Synchrous control
 HDLEditor.asyncControl=Aynchrous control
-
 submitAnExercise.label=Open own exercise
 submitAnExercise.mnemonic=n
 submitAnExercise.toolTipText=Open your own exercise
@@ -551,3 +549,4 @@ newExercise.toolTipText=Create a new exercise
 editExercise.label=Edit an exercise
 editExercise.mnemonic=n
 editExercise.toolTipText=Edit an exercise
+testt=jooooooooooooooooooo

@@ -1,6 +1,7 @@
 package animal.graphics;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 import animal.main.AnimalConfiguration;
 import animal.misc.XProperties;
@@ -22,8 +23,11 @@ public class PTImage extends PTGraphicObject{
     public static final String IMAGE_TYPE = "Image";
     protected String pathName = "";
     protected Point position = new Point(0, 0);
-    protected int width = 0;
-    protected int height = 0;
+    protected int width;
+    protected int height;
+    protected double rotation = 0;
+
+    AffineTransform currentTransform;
     
 
     // ======================================================================
@@ -146,14 +150,23 @@ public class PTImage extends PTGraphicObject{
         this.height = h;
     }
 
+    public void setRotation(double degrees) {
+        this.rotation = degrees;
+    }
+
+    public double getRotation(){
+        return this.rotation;
+    }
+
     public void scaleFromNewPoint(Point p) {
         int originalX = this.position.x;
         int originalY = this.position.y;
+
         if(originalX <= p.x) {
-            this.setWidth(originalX + p.x);
+            this.setWidth(p.x - originalX);
         }
         if(originalY <= p.y) {
-            this.setHeight(originalY + p.y);
+            this.setHeight(p.y - originalY);
         }
     }
 
@@ -174,14 +187,25 @@ public class PTImage extends PTGraphicObject{
      * all graphic operations.
      */
     public void paint(Graphics g) {
-            Image img = new ImageIcon(getPathName()).getImage();
-            Graphics2D g2 = (Graphics2D) g;
+        Image img = new ImageIcon(getPathName()).getImage();
+        Graphics2D g2 = (Graphics2D) g;
 
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(img, getPosition().x,getPosition().y, getWidth(), getHeight(),null);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+        AffineTransform old = g2.getTransform();
+
+        g2.translate(getPosition().x, getPosition().y);
+        g2.rotate(Math.toRadians(this.rotation));
+        currentTransform = g2.getTransform();
+
+        g2.drawImage(img, 0,0, getWidth(), getHeight(),null);
+
+
+        //revert to old transformation. Otherwise every other objects rotates
+        g2.setTransform(old);
     }
 
     public void translate(int x, int y) {
@@ -237,6 +261,7 @@ public class PTImage extends PTGraphicObject{
      * the box and the pointer.
      */
     public Rectangle getBoundingBox() {
+//        return (Rectangle) currentTransform.createTransformedShape(new Rectangle(position.x, position.y, width, height));
         return new Rectangle(position.x, position.y, width, height);
     }
 
