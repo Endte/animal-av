@@ -304,4 +304,10 @@ public class PTImage extends PTGraphicObject{
         sb.append(" rotation ").append(getRotation());
         return sb.toString();
     }
+
+    public static Point rotatePoint(double cx, double cy, double angle, Point p){
+        int x = (int)(Math.cos(Math.toRadians(angle)) * (p.x - cx) - Math.sin(Math.toRadians(angle)) * (p.y - cy) + cx);
+        int y = (int)(Math.sin(Math.toRadians(angle)) * (p.x - cx) + Math.cos(Math.toRadians(angle)) * (p.y - cy) + cy);
+        return new Point(x, y);
+    }
 }
