@@ -36,18 +36,16 @@ public abstract class AbstractImageEditor extends GraphicEditor implements Actio
     public void createImageComponentChooser(Color initialColor, String colorName) {
         initializeLayoutComponents();
 
-        // why is this borderkey not working ffs?
-        createImageRotationOperations("AbstractTextEditor.rotation");
+        createImageRotationOperations("AbstractImageEditor.rotate");
 
-        // add color choice
-        insertSeparator("textColorBL", cp, generator);
+        //insertSeparator("textColorBL", cp, generator);
 
         ColorChooser = createColorChooser(colorName,
-                "GenericEditor.chooseColor", "AbstractTextEditor.color",
+                "GenericEditor.chooseColor", "AbstractImageEditor.color",
                 initialColor);
         ExtendedActionButton colorButton = new ExtendedActionButton(
                 ColorChooser, KeyEvent.VK_T);
-        cp.add(colorButton, Editor.LAYOUT_PARAGRAPH_GAP_WRAP);
+        //cp.add(colorButton, Editor.LAYOUT_PARAGRAPH_GAP_WRAP);
     }
 
     public void getProperties(XProperties props) {
