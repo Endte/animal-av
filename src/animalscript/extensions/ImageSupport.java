@@ -26,24 +26,28 @@ public class ImageSupport extends BasicParser implements AnimalScriptInterface {
     public void parseImageInput() throws IOException {
         int initStep = AnimalParseSupport.getCurrentStep();
         String value = "", role = null;
+        Double rotation = 0.0;
 
         String localType = ParseSupport.parseWord(stok, "image type").toLowerCase();
         String ObjName = ParseSupport.parseText(stok, "Image Obj name");
         String ImagePath = ParseSupport.parseText(stok, "Image pathName");
         Point position = ParseSupport.parseNode(stok, "Image Position");
         Point size = ParseSupport.parseNode(stok, "Image (Width,Height)");
+        if (ParseSupport.parseOptionalWord(stok, "keyword 'rotation'", "rotation")) {
+            rotation = ParseSupport.parseDouble(stok, "Image rotation");
+        }
 
-        PTImage square = new PTImage(ImagePath, position, size.x, size.y);
-        square.setObjectName(ObjName);
+        PTImage image = new PTImage(ImagePath, position, size.x, size.y, rotation);
+        image.setObjectName(ObjName);
 
-        BasicParser.addGraphicObject(square, anim);
+        BasicParser.addGraphicObject(image, anim);
 
         StringBuilder oids = new StringBuilder();
-        oids.append(square.getNum(false));
+        oids.append(image.getNum(false));
 
         // insert into object list -- necessary for lookups later on!
-        getObjectIDs().put(square.getObjectName(), square.getNum(false));
-        getObjectTypes().put(square.getObjectName(), getTypeIdentifier("triangle"));
+        getObjectIDs().put(image.getObjectName(), image.getNum(false));
+        getObjectTypes().put(image.getObjectName(), getTypeIdentifier("image"));
         // display the component, unless marked as 'hidden'
         AnimalParseSupport.showComponents(stok, "" + oids.toString(), localType,
                 true);
