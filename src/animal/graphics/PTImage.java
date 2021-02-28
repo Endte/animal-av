@@ -176,6 +176,11 @@ public class PTImage extends PTGraphicObject{
         if(originalY <= p.y) {
             this.setHeight(p.y - originalY);
         }
+        if(p.x - originalX < 1)
+            this.setWidth(1);
+
+        if(p.y - originalY < 1)
+            this.setHeight(1);
     }
 
     public void setPathName(String path){
