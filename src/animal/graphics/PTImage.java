@@ -89,8 +89,8 @@ public class PTImage extends PTGraphicObject{
 
 
     /**
-     * returns this text's position as a Point
-     * @return the position used for this text
+     * returns this images's position as a Point
+     * @return the position used for this image
      */
     public Point getPosition() {
         return position;
@@ -205,8 +205,9 @@ public class PTImage extends PTGraphicObject{
 
         AffineTransform old = g2.getTransform();
 
-        g2.translate(getPosition().x, getPosition().y);
+        g2.translate(getPosition().x + getWidth() / 2, getPosition().y + getHeight() / 2);
         g2.rotate(Math.toRadians(this.rotation));
+        g2.translate(-getWidth() / 2, -getHeight() / 2);
         currentTransform = g2.getTransform();
 
         g2.drawImage(img, 0,0, getWidth(), getHeight(),null);
@@ -266,7 +267,7 @@ public class PTImage extends PTGraphicObject{
     }
 
     /**
-     * returns the Text's bounding box, i.e. the smallest rectangle that contains
+     * returns the Image's bounding box, i.e. the smallest rectangle that contains
      * the box and the pointer.
      */
     public Rectangle getBoundingBox() {
