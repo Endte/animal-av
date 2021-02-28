@@ -50,6 +50,14 @@ public class PTImage extends PTGraphicObject{
         setHeight(height);
     }
 
+    public PTImage(String pathName,  Point targetPosition, int width, int height, double rotation) {
+        setPathName(pathName);
+        setPosition(targetPosition);
+        setWidth(width);
+        setHeight(height);
+        setRotation(rotation);
+    }
+
     // ======================================================================
     // Attribute accessing
     // ======================================================================
@@ -254,6 +262,7 @@ public class PTImage extends PTGraphicObject{
         targetImage.setHeight((getHeight()));
         targetImage.setWidth(getWidth());
         targetImage.setPathName(getPathName());
+        targetImage.setRotation(getRotation());
     }
 
     /**
@@ -285,7 +294,8 @@ public class PTImage extends PTGraphicObject{
             sb.append("\"").append(getObjectName()).append("\" ");
         sb.append("\"").append(getPathName()).append("\" ");
         sb.append("(").append(getPosition().x).append(",").append(getPosition().y).append(")").append(" ");
-        sb.append("(").append(getWidth()).append(",").append(getHeight()).append(")").append("\"");
+        sb.append("(").append(getWidth()).append(",").append(getHeight()).append(")").append("\" ");
+        sb.append(" rotation ").append(getRotation());
         return sb.toString();
     }
 }
