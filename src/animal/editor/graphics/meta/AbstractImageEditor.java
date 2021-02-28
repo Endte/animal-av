@@ -38,14 +38,11 @@ public abstract class AbstractImageEditor extends GraphicEditor implements Actio
 
         createImageRotationOperations("AbstractImageEditor.rotate");
 
-        //insertSeparator("textColorBL", cp, generator);
-
         ColorChooser = createColorChooser(colorName,
                 "GenericEditor.chooseColor", "AbstractImageEditor.color",
                 initialColor);
         ExtendedActionButton colorButton = new ExtendedActionButton(
                 ColorChooser, KeyEvent.VK_T);
-        //cp.add(colorButton, Editor.LAYOUT_PARAGRAPH_GAP_WRAP);
     }
 
     public void getProperties(XProperties props) {
